@@ -1,0 +1,29 @@
+#!markdown
+
+# Advent of Code 2021
+
+Read in the test data
+
+#!fsharp
+
+#load "Library.fs"
+
+open System.IO
+
+open AdventOfCode2021
+
+let testData =
+    File.ReadAllLines("input.txt")
+    |> Array.map int
+    |> Array.map ((*) 1<depth>)
+    |> List.ofArray
+
+#!markdown
+
+## Day 1.1
+
+Get the increases in depth
+
+#!fsharp
+
+testData |> Scan.numberOfDepthIncreases
