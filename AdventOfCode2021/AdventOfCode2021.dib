@@ -26,4 +26,20 @@ Get the increases in depth
 
 #!fsharp
 
-testData |> Scan.numberOfDepthIncreases
+let slidingWindow = Scan.slidingWindow 1
+let resampler = Scan.resample slidingWindow
+
+testData |> Scan.numberOfDepthIncreases resampler
+
+#!markdown
+
+## Day 1.2
+
+Get increases in depth with a 3 element sliding window
+
+#!fsharp
+
+let slidingWindow = Scan.slidingWindow 3
+let resampler = Scan.resample slidingWindow
+
+testData |> Scan.numberOfDepthIncreases resampler

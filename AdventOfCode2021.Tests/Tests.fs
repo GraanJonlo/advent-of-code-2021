@@ -6,11 +6,35 @@ open FsUnit.Xunit
 open AdventOfCode2021
 
 [<Fact>]
-let ``Depth increases and decreases`` () =
+let ``Sliding window`` () =
     [ 1<depth>
       2<depth>
       3<depth>
       1<depth> ]
-    |> Scan.numberOfDepthIncreases
-    |> should equal 2
+    |> Scan.slidingWindow 2
+    |> should
+        equal
+        [ [ 1<depth>; 2<depth> ]
+          [ 2<depth>; 3<depth> ]
+          [ 3<depth>; 1<depth> ] ]
 
+[<Fact>]
+let ``Resample`` () =
+    let slidingWindow =
+        fun _ ->
+            [ [ 1<depth>; 2<depth> ]
+              [ 2<depth>; 3<depth> ]
+              [ 3<depth>; 1<depth> ] ]
+
+    []
+    |> Scan.resample slidingWindow
+    |> should equal [ 3<depth>; 5<depth>; 4<depth> ]
+
+[<Fact>]
+let ``Depth increases and decreases`` () =
+    let resampler =
+        fun _ -> [ 3<depth>; 5<depth>; 4<depth> ]
+
+    []
+    |> Scan.numberOfDepthIncreases resampler
+    |> should equal 1
