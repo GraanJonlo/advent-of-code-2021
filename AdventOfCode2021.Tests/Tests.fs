@@ -38,3 +38,12 @@ let ``Depth increases and decreases`` () =
     []
     |> Scan.numberOfDepthIncreases resampler
     |> should equal 1
+
+[<Fact>]
+let ``Calculate final position`` () =
+    [ Forward 2<move>
+      Forward 1<move>
+      Down 2<move>
+      Up 1<move> ]
+    |> Move.finalPosition
+    |> should equal (3<move>, 1<move>)

@@ -31,3 +31,24 @@ module Scan =
             (List.head resampledInput, 0)
             (List.tail resampledInput)
         |> snd
+
+[<Measure>]
+type move
+
+type Move =
+    | Forward of int<move>
+    | Up of int<move>
+    | Down of int<move>
+    | NoMove
+
+module Move =
+    let finalPosition moves =
+        moves
+        |> List.fold
+            (fun (oldX, oldY) m ->
+                match m with
+                | Forward distance -> (oldX + distance, oldY)
+                | Up distance -> (oldX, oldY - distance)
+                | Down distance -> (oldX, oldY + distance)
+                | NoMove -> (oldX, oldY))
+            (0<move>, 0<move>)

@@ -2,8 +2,6 @@
 
 # Advent of Code 2021
 
-Read in the test data
-
 #!fsharp
 
 #load "Library.fs"
@@ -11,12 +9,6 @@ Read in the test data
 open System.IO
 
 open AdventOfCode2021
-
-let testData =
-    File.ReadAllLines("input.txt")
-    |> Array.map int
-    |> Array.map ((*) 1<depth>)
-    |> List.ofArray
 
 #!markdown
 
@@ -26,10 +18,16 @@ Get the increases in depth
 
 #!fsharp
 
+let day01Data =
+    File.ReadAllLines("input01.txt")
+    |> Array.map int
+    |> Array.map ((*) 1<depth>)
+    |> List.ofArray
+
 let slidingWindow = Scan.slidingWindow 1
 let resampler = Scan.resample slidingWindow
 
-testData |> Scan.numberOfDepthIncreases resampler
+day01Data |> Scan.numberOfDepthIncreases resampler
 
 #!markdown
 
@@ -42,4 +40,32 @@ Get increases in depth with a 3 element sliding window
 let slidingWindow = Scan.slidingWindow 3
 let resampler = Scan.resample slidingWindow
 
-testData |> Scan.numberOfDepthIncreases resampler
+day01Data |> Scan.numberOfDepthIncreases resampler
+
+#!markdown
+
+## Day 2.1
+
+Get final position
+
+#!fsharp
+
+let day02Data =
+    File.ReadAllLines("input02.txt")
+    |> Array.map (fun x ->
+        match (x.Split(" ")) with
+        | [| direction; distance |] -> (direction, int distance  * 1<move>)
+        | _ -> ("", 0 * 1<move>)
+    )
+    |> Array.map (fun (direction, distance) ->
+        match direction with
+        | "forward" -> Forward distance
+        | "up" -> Up distance
+        | "down" -> Down distance
+        | _ -> NoMove
+    )
+    |> List.ofArray
+
+day02Data
+|> Move.finalPosition
+|> fun (x, y) -> x * y
