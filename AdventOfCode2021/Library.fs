@@ -35,10 +35,13 @@ module Scan =
 [<Measure>]
 type move
 
+[<Measure>]
+type aim
+
 type Move =
-    | Forward of int<move>
-    | Up of int<move>
-    | Down of int<move>
+    | Forward of int
+    | Up of int
+    | Down of int
     | NoMove
 
 module Move =
@@ -51,4 +54,23 @@ module Move =
                 | Up distance -> (oldX, oldY - distance)
                 | Down distance -> (oldX, oldY + distance)
                 | NoMove -> (oldX, oldY))
-            (0<move>, 0<move>)
+            (0, 0)
+
+type Position =
+    { horizontal: int<move>
+      depth: int<move>
+      aim: int }
+
+module Position =
+    let move m p =
+        match m with
+        | Forward dist ->
+            { p with
+                horizontal = p.horizontal + (dist * 1<move>)
+                depth = p.depth + (p.aim * dist * 1<move>) }
+        | Up aimDecrease -> { p with aim = p.aim - aimDecrease }
+        | Down aimIncrease -> { p with aim = p.aim + aimIncrease }
+        | NoMove -> p
+
+    let updatePosition mover moves p =
+        List.fold (fun p m -> mover m p) p moves

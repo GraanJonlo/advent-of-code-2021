@@ -41,9 +41,44 @@ let ``Depth increases and decreases`` () =
 
 [<Fact>]
 let ``Calculate final position`` () =
-    [ Forward 2<move>
-      Forward 1<move>
-      Down 2<move>
-      Up 1<move> ]
+    [ Forward 2; Forward 1; Down 2; Up 1 ]
     |> Move.finalPosition
-    |> should equal (3<move>, 1<move>)
+    |> should equal (3<move>, 1<aim>)
+
+[<Fact>]
+let ``Moves forward without depth change when aim is 0`` () =
+    { horizontal = 0<move>
+      depth = 0<move>
+      aim = 0 }
+    |> Position.move (Forward 2)
+    |> should
+        equal
+        { horizontal = 2<move>
+          depth = 0<move>
+          aim = 0 }
+
+[<Fact>]
+let ``Changes aim`` () =
+    { horizontal = 0<move>
+      depth = 0<move>
+      aim = 0 }
+    |> Position.move (Down 2)
+    |> Position.move (Down 1)
+    |> Position.move (Up 1)
+    |> should
+        equal
+        { horizontal = 0<move>
+          depth = 0<move>
+          aim = 2 }
+
+[<Fact>]
+let ``Increases depth`` () =
+    { horizontal = 0<move>
+      depth = 0<move>
+      aim = 0 }
+    |> Position.updatePosition Position.move [ Down 3; Forward 2 ]
+    |> should
+        equal
+        { horizontal = 2<move>
+          depth = 6<move>
+          aim = 3 }

@@ -54,8 +54,8 @@ let day02Data =
     File.ReadAllLines("input02.txt")
     |> Array.map (fun x ->
         match (x.Split(" ")) with
-        | [| direction; distance |] -> (direction, int distance  * 1<move>)
-        | _ -> ("", 0 * 1<move>)
+        | [| direction; distance |] -> (direction, int distance)
+        | _ -> ("", 0)
     )
     |> Array.map (fun (direction, distance) ->
         match direction with
@@ -69,3 +69,14 @@ let day02Data =
 day02Data
 |> Move.finalPosition
 |> fun (x, y) -> x * y
+
+#!markdown
+
+## Day 2.2
+
+Get final position with proper sub moves
+
+#!fsharp
+
+Position.updatePosition Position.move day02Data { horizontal=0<move>; depth=0<move>; aim=0}
+|> fun { horizontal = h; depth = d; aim = _ } -> h * d
