@@ -21,7 +21,7 @@ Get the increases in depth
 let day01Data =
     File.ReadAllLines("input01.txt")
     |> Array.map int
-    |> Array.map ((*) 1<depth>)
+    |> Array.map ((*) 1<metre>)
     |> List.ofArray
 
 let slidingWindow = Scan.slidingWindow 1
@@ -59,7 +59,7 @@ let day02Data =
     )
     |> Array.map (fun (direction, distance) ->
         match direction with
-        | "forward" -> Forward distance
+        | "forward" -> Forward (distance * 1<metre>)
         | "up" -> Up distance
         | "down" -> Down distance
         | _ -> NoMove
@@ -78,5 +78,5 @@ Get final position with proper sub moves
 
 #!fsharp
 
-Position.updatePosition Position.move day02Data { horizontal=0<move>; depth=0<move>; aim=0}
+Position.updatePosition Position.move day02Data { horizontal=0<metre>; depth=0<metre>; aim=0}
 |> fun { horizontal = h; depth = d; aim = _ } -> h * d

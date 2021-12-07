@@ -1,12 +1,12 @@
 namespace AdventOfCode2021
 
 [<Measure>]
-type depth
+type metre
 
-type Scan = int<depth> list
+type Scan = int<metre> list
 
 module Scan =
-    let slidingWindow size (input: int<depth> list) =
+    let slidingWindow size (input: Scan) =
         let rec slidingWindow' size input agg =
             if List.length input < size then
                 List.rev agg
@@ -15,7 +15,7 @@ module Scan =
 
         slidingWindow' size input []
 
-    type Sampler = int<depth> list -> int<depth> list list
+    type Sampler = int<metre> list -> int<metre> list list
 
     let resample (sampler: Sampler) input = sampler input |> List.map List.sum
 
@@ -32,14 +32,8 @@ module Scan =
             (List.tail resampledInput)
         |> snd
 
-[<Measure>]
-type move
-
-[<Measure>]
-type aim
-
 type Move =
-    | Forward of int
+    | Forward of int<metre>
     | Up of int
     | Down of int
     | NoMove
@@ -54,11 +48,11 @@ module Move =
                 | Up distance -> (oldX, oldY - distance)
                 | Down distance -> (oldX, oldY + distance)
                 | NoMove -> (oldX, oldY))
-            (0, 0)
+            (0<metre>, 0)
 
 type Position =
-    { horizontal: int<move>
-      depth: int<move>
+    { horizontal: int<metre>
+      depth: int<metre>
       aim: int }
 
 module Position =
@@ -66,8 +60,8 @@ module Position =
         match m with
         | Forward dist ->
             { p with
-                horizontal = p.horizontal + (dist * 1<move>)
-                depth = p.depth + (p.aim * dist * 1<move>) }
+                horizontal = p.horizontal + dist
+                depth = p.depth + (p.aim * dist) }
         | Up aimDecrease -> { p with aim = p.aim - aimDecrease }
         | Down aimIncrease -> { p with aim = p.aim + aimIncrease }
         | NoMove -> p
