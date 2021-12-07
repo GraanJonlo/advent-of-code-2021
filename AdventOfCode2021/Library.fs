@@ -1,5 +1,7 @@
 namespace AdventOfCode2021
 
+open System
+
 [<Measure>]
 type metre
 
@@ -68,3 +70,42 @@ module Position =
 
     let updatePosition mover moves p =
         List.fold (fun p m -> mover m p) p moves
+
+type Vector<'a> = Vector of 'a list
+
+module Vector =
+    let unwrap (Vector v) = v
+
+    let add (Vector v1) (Vector v2) =
+        List.zip v1 v2
+        |> List.map (fun (x, y) -> x + y)
+        |> Vector
+
+    let sum = List.reduce add
+
+    let map fn (Vector v) =
+        List.map fn v
+        |> Vector
+
+    let parseInt radix (Vector v) =
+        let rec parseInt' radix n total remains =
+            match remains with
+            | [] -> total
+            | head :: tail ->
+            parseInt' radix (n * radix) (total + (head * n)) tail
+
+        List.rev v
+        |> parseInt' radix 1 0
+
+    let gamma vs =
+        vs
+        |> sum
+        |> map float
+        |> map (fun x -> x / (float <| List.length vs))
+        |> map (fun x -> Math.Round(x))
+        |> map int
+
+    let epsilon vs =
+        gamma vs
+        |> map (fun x -> x - 1)
+        |> map (fun x -> Math.Abs(x))

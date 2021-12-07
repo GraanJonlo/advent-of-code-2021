@@ -6,6 +6,7 @@
 
 #load "Library.fs"
 
+open System
 open System.IO
 
 open AdventOfCode2021
@@ -80,3 +81,26 @@ Get final position with proper sub moves
 
 Position.updatePosition Position.move day02Data { horizontal=0<metre>; depth=0<metre>; aim=0}
 |> fun { horizontal = h; depth = d; aim = _ } -> h * d
+
+#!markdown
+
+## Day 3.1
+Get the gamma and the epsilon
+
+#!fsharp
+
+let day03Data =
+    File.ReadAllLines("input03.txt")
+    |> Array.map (fun x ->
+        x.ToCharArray()
+        |> Array.map int
+        |> Array.map (fun y -> y-48)
+        |> List.ofArray
+        |> Vector
+    )
+    |> List.ofArray
+
+let gamma = day03Data |> Vector.gamma
+let epsilon = day03Data |> Vector.epsilon
+
+(gamma |> Vector.parseInt 2) * (epsilon |> Vector.parseInt 2)

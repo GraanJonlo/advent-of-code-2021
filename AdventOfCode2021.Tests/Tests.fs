@@ -82,3 +82,19 @@ let ``Increases depth`` () =
         { horizontal = 2<metre>
           depth = 6<metre>
           aim = 3 }
+
+[<Fact>]
+let ``Find most common bits/ gamma`` () =
+    [ Vector [ 1; 1; 1 ]
+      Vector [ 1; 0; 1 ]
+      Vector [ 0; 0; 0 ] ]
+    |> Vector.gamma
+    |> should equal <| Vector [ 1; 0; 1 ]
+
+[<Fact>]
+let ``Find least common bits/ epsilon`` () =
+    [ Vector [ 1; 1; 1 ]
+      Vector [ 1; 0; 1 ]
+      Vector [ 0; 0; 0 ] ]
+    |> Vector.epsilon
+    |> should equal <| Vector [ 0; 1; 0 ]
